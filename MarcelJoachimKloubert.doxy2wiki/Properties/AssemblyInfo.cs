@@ -1,4 +1,4 @@
-﻿// $Id: AssemblyInfo.cs 4 2010-08-25 22:10:29Z mkloubert $
+﻿// $Id$
 
 using System.Reflection;
 using System.Runtime.InteropServices;

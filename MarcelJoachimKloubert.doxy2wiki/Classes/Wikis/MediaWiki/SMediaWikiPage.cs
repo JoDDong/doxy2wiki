@@ -1,4 +1,4 @@
-﻿// $Id: SMediaWikiPage.cs 21 2010-08-29 22:43:29Z mkloubert $
+﻿// $Id$
 
 // doxy2wiki - Command line tool to convert DoxyGen XML documents to a known wiki engine import format.
 // Copyright (C) 2010 Marcel Joachim Kloubert
