@@ -18,10 +18,6 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 using System;
-using System.IO;
-using System.Xml;
-using MarcelJoachimKloubert.doxy2wiki.DoxyGen;
-using MarcelJoachimKloubert.doxy2wiki.Wikis.MediaWiki;
 
 namespace MarcelJoachimKloubert.doxy2wiki
 {
@@ -47,24 +43,6 @@ namespace MarcelJoachimKloubert.doxy2wiki
                     typeof(OutputFormat),
                     output.Substring(0, output.IndexOf(":")).Trim(),
                     true);
-
-                DoxyProject proj = new DoxyProject(new FileInfo(doxygenXmlFile), "EVOCURA.CommonResources");
-
-                XmlNode mediaWikiRootNode = null;
-                XmlDocument mediaWikiImportDoc = MediaWikiPage.CreateImportDocument(out mediaWikiRootNode);
-
-                proj.CreateMediaWikiPage(mediaWikiRootNode);
-
-                DoxyCompound c = proj["EvoExtensionsSystem"][0];
-                foreach (DoxyCompoundMember m in c)
-                {
-                    if (m.IsExtensionMethod == false)
-                    {
-                        continue;
-                    }
-
-                    Console.WriteLine("{0}; {1}", m.Parameters[0].Name, m.IsExtensionMethod);
-                }
 
                 result = 0;
             }
