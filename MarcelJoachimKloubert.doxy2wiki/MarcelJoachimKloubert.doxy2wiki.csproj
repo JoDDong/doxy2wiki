@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4EF8592E-6C24-40B6-8D9F-90853E7E750A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MarcelJoachimKloubert.doxy2wiki</RootNamespace>
+    <AssemblyName>tmDoxy2Wiki</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Debug\tmDoxy2Wiki.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>MarcelJoachimKloubert.doxy2wiki.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\Wikis\MediaWiki\SMediaWikiPage.cs" />
+    <Compile Include="Classes\DoxyGen\DoxyProject.cs" />
+    <Compile Include="Classes\DoxyGen\EDoxyCompoundType.cs" />
+    <Compile Include="Classes\DoxyGen\EDoxyCompoundMemberType.cs" />
+    <Compile Include="Classes\DoxyGen\EDoxyVisibility.cs" />
+    <Compile Include="Classes\DoxyGen\SDoxyCompoundValue.cs" />
+    <Compile Include="Classes\DoxyGen\SDoxyExample.cs" />
+    <Compile Include="Classes\DoxyGen\SDoxyUnknownType.cs" />
+    <Compile Include="Extensions\System.cs" />
+    <Compile Include="Extensions\MarcelJoachimKloubert.doxy2wiki.DoxyGen.cs" />
+    <Compile Include="Extensions\System.Collections.cs" />
+    <Compile Include="Classes\TMHelpers.cs" />
+    <Compile Include="Interfaces\DoxyGen\IDoxyType.cs" />
+    <Compile Include="Classes\DoxyGen\SDoxyCompoundMemberParameter.cs" />
+    <Compile Include="Classes\DoxyGen\SDoxyCompoundMember.cs" />
+    <Compile Include="Classes\DoxyGen\SDoxyCompound.cs" />
+    <Compile Include="Classes\DoxyGen\SDoxyCompoundNamespace.cs" />
+    <Compile Include="Classes\EOutputFormat.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="MarcelJoachimKloubert.doxy2wiki.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GPLv2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
