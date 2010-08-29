@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("doxy2wiki")]
 [assembly: AssemblyDescription("Converts Doxygen XML documents to Wiki import documents for known wiki engines, like MediaWiki.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Copyright (C) 2010 Marcel JoachimKloubert, Zweifallerstr. 1-5, 52222 Stolberg, Germany")]
+[assembly: AssemblyCompany("Copyright (C) 2010 Marcel Joachim Kloubert, Zweifallerstr. 1-5, 52222 Stolberg, Germany")]
 [assembly: AssemblyProduct("doxy2wiki")]
-[assembly: AssemblyCopyright("Copyright (C) 2010 Marcel JoachimKloubert, Zweifallerstr. 1-5, 52222 Stolberg, Germany")]
+[assembly: AssemblyCopyright("Copyright (C) 2010 Marcel Joachim Kloubert, Zweifallerstr. 1-5, 52222 Stolberg, Germany")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
