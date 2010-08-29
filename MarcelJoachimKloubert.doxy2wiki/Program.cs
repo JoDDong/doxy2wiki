@@ -18,6 +18,10 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 using System;
+using System.IO;
+using System.Xml;
+using MarcelJoachimKloubert.doxy2wiki.DoxyGen;
+using MarcelJoachimKloubert.doxy2wiki.Wikis.MediaWiki;
 
 namespace MarcelJoachimKloubert.doxy2wiki
 {
@@ -36,13 +40,38 @@ namespace MarcelJoachimKloubert.doxy2wiki
 
             try
             {
-                string doxygenXmlFile = @"C:\Users\Marcel Kloubert\Desktop\doxygen_out\xml\index.xml";
-                string output = @"mediawiki:C:\Users\Marcel Kloubert\Desktop\doxygen_out\test.xml";
+                string doxygenXmlFile = args[0].Trim();
+                string output = args[1].Trim();
+                string title = args[2].Trim();
 
                 OutputFormat format = (OutputFormat)Enum.Parse(
                     typeof(OutputFormat),
                     output.Substring(0, output.IndexOf(":")).Trim(),
                     true);
+
+                FileInfo outputFile = new FileInfo(output.Substring(output.IndexOf(":") + 1).Trim());
+                if (outputFile.Exists)
+                {
+                    outputFile.Delete();
+                }
+
+                switch (format)
+                {
+                    case OutputFormat.MediaWiki:
+                        {
+                            DoxyProject proj = new DoxyProject(new FileInfo(doxygenXmlFile), title);
+
+                            XmlNode rootNode = null;
+                            XmlDocument importDoc = MediaWikiPage.CreateImportDocument(out rootNode);
+
+                            proj.CreateMediaWikiPage(rootNode, DateTime.Now);
+                            importDoc.Save(outputFile.FullName);
+                        }
+                        break;
+
+                    default:
+                        throw new NotSupportedException();
+                }
 
                 result = 0;
             }

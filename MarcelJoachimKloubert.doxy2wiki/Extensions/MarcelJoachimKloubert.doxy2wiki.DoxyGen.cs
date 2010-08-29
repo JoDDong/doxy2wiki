@@ -251,7 +251,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <returns></returns>
         public static string GetProjectMediaWikiPath(this DoxyProject proj)
         {
-            return string.Format("Documentation/CSharp/{0}", proj.Name);
+            return string.Format("doxy2wiki/Documentation/{0}", proj.Name);
         }
 
         /// <summary>
