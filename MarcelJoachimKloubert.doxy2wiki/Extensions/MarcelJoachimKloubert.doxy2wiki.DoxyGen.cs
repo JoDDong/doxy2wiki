@@ -165,8 +165,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
 !&nbsp;'''#'''&nbsp;
 !&nbsp;'''Name'''&nbsp;
 !&nbsp;'''Type'''&nbsp;
-!&nbsp;'''Description'''&nbsp;
-";
+!&nbsp;'''Description'''&nbsp;";
 
                                     int ordinal = 0;
                                     foreach (DoxyCompoundMemberParameter param in member.Parameters)
@@ -189,13 +188,11 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
                                         }
 
                                         @params += string.Format(@"
-
 |-
 |&nbsp;{0}&nbsp;
 |&nbsp;{1}&nbsp;
 |&nbsp;{2}&nbsp;
-|&nbsp;{3}&nbsp;
-", ++ordinal
+|&nbsp;{3}&nbsp;", ++ordinal
  , param.Name
  , paramType
  , param.Description);
