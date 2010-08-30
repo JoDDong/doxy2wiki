@@ -64,9 +64,9 @@
     <Compile Include="Classes\TMHelpers.cs" />
     <Compile Include="Interfaces\DoxyGen\IDoxyType.cs" />
     <Compile Include="Classes\DoxyGen\SDoxyCompoundMemberParameter.cs" />
-    <Compile Include="Classes\DoxyGen\SDoxyCompoundMember.cs" />
+    <Compile Include="Classes\DoxyGen\DoxyCompoundMember.cs" />
     <Compile Include="Classes\DoxyGen\DoxyCompound.cs" />
-    <Compile Include="Classes\DoxyGen\SDoxyCompoundNamespace.cs" />
+    <Compile Include="Classes\DoxyGen\DoxyCompoundNamespace.cs" />
     <Compile Include="Classes\EOutputFormat.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

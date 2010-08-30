@@ -28,9 +28,9 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
     /// <summary>
     /// Stores data of a DoxyGen compound's member.
     /// </summary>
-    public struct DoxyCompoundMember
+    public sealed class DoxyCompoundMember
     {
-        #region Data Members (28)
+        #region Fields (12)
 
         private string _description;
         private DoxyExample<DoxyCompoundMember>[] _examples;
@@ -44,6 +44,40 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         private DoxyCompoundMemberType _type;
         private DoxyVisibility _visibility;
         private XmlNode _xml;
+
+        #endregion Fields
+
+        #region Constructors (1)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent">The parent object.</param>
+        /// <param name="xml">The underlying XML data.</param>
+        /// <param name="file">The underlying file.</param>
+        public DoxyCompoundMember(DoxyCompound parent, XmlNode xml, FileInfo file)
+        {
+            this._parent = parent;
+            this._xml = xml;
+            this._file = file;
+
+            this._name = null;
+            this._description = null;
+            this._type = DoxyCompoundMemberType.Unknown;
+            this._visibility = DoxyVisibility.Unknown;
+            this._isStatic = false;
+            this._isExplicit = false;
+            this._params = null;
+            this._resultType = null;
+            this._examples = null;
+
+            this.InitMe();
+        }
+
+        #endregion Constructors
+
+        #region Properties (16)
+
         /// <summary>
         /// Gets the description.
         /// </summary>
@@ -218,34 +252,9 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
             get { return this._xml; }
         }
 
-        #endregion Data Members
+        #endregion Properties
 
-        #region Methods (5)
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parent">The parent object.</param>
-        /// <param name="xml">The underlying XML data.</param>
-        /// <param name="file">The underlying file.</param>
-        public DoxyCompoundMember(DoxyCompound parent, XmlNode xml, FileInfo file)
-        {
-            this._parent = parent;
-            this._xml = xml;
-            this._file = file;
-
-            this._name = null;
-            this._description = null;
-            this._type = DoxyCompoundMemberType.Unknown;
-            this._visibility = DoxyVisibility.Unknown;
-            this._isStatic = false;
-            this._isExplicit = false;
-            this._params = null;
-            this._resultType = null;
-            this._examples = null;
-
-            this.InitMe();
-        }
+        #region Methods  (4)
 
         /// <summary>
         /// Returns a parameter by its name.
@@ -342,6 +351,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         }
 
         #endregion Methods
+
         /// <summary>
         /// Gets all examples.
         /// </summary>

@@ -61,11 +61,11 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         {
             string result = string.Format("<source lang=\"{0}\">{1}{1}", lang, Environment.NewLine);
 
-            if (compound.Namespace.HasValue)
+            if (compound.Namespace != null)
             {
                 result += string.Format(
                     "namespace {0}{1}{{{1}",
-                    compound.Namespace.Value.FullName,
+                    compound.Namespace.FullName,
                     Environment.NewLine);
             }
 
@@ -80,7 +80,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
                 "    }}{0}",
                 Environment.NewLine);
 
-            if (compound.Namespace.HasValue)
+            if (compound.Namespace != null)
             {
                 result += string.Format(
                     "}}{0}",
@@ -106,13 +106,13 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
             newPage.Author = "doxy2wiki";
             newPage.Comment = "Import.";
 
-            IEnumerable<DoxyCompoundNamespace?> namespaces = proj.GetAllCompounds()
+            IEnumerable<DoxyCompoundNamespace> namespaces = proj.GetAllCompounds()
                                                                  .Select(x => x.Namespace)
                                                                  .Distinct(DoxyCompoundNamespace.DoxyCompoundNamespaceComparer.Instance)
-                                                                 .OrderBy(x => x.HasValue ? x.Value.FullName : (string)null);
+                                                                 .OrderBy(x => x != null ? x.FullName : (string)null);
 
             List<string> namespaceChapters = new List<string>();
-            foreach (DoxyCompoundNamespace? @namespace in namespaces)
+            foreach (DoxyCompoundNamespace @namespace in namespaces)
             {
                 string compoundList = string.Empty;
                 foreach (DoxyCompound compound in proj.GetAllCompounds()
@@ -131,7 +131,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
 
 {1}
 
-", @namespace.HasValue ? @namespace.Value.FullName : "(none)"
+", @namespace != null ? @namespace.FullName : "(none)"
  , compoundList);
 
                 namespaceChapters.Add(chapter);
@@ -296,7 +296,7 @@ Environment.NewLine);
             return string.Format(
                 "{0}/{1}/{2}",
                 compound.Parent.GetMediaWikiPath(),
-                compound.Namespace.HasValue ? compound.Namespace.Value.FullName : "(none)",
+                compound.Namespace != null ? compound.Namespace.FullName : "(none)",
                 compound.Name);
         }
 

@@ -42,7 +42,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         private string _id;
         private DoxyCompoundMember[] _methods;
         private string _name;
-        private DoxyCompoundNamespace? _namespace;
+        private DoxyCompoundNamespace _namespace;
         private DoxyCompoundMember[] _operators;
         private DoxyProject _parent;
         private object _parentCompound;
@@ -171,7 +171,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <summary>
         /// Gets the namespace.
         /// </summary>
-        public DoxyCompoundNamespace? Namespace
+        public DoxyCompoundNamespace Namespace
         {
             get { return this._namespace; }
         }
@@ -578,14 +578,14 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <returns></returns>
         public string ToString(string separator)
         {
-            if (this.Namespace.HasValue == false)
+            if (this.Namespace == null)
             {
                 return this.Name;
             }
 
-            return this.Namespace.Value.Parts
-                                       .Concat(new object[] { this.Name })
-                                       .JoinAsString(separator);
+            return this.Namespace.Parts
+                                 .Concat(new object[] { this.Name })
+                                 .JoinAsString(separator);
         }
 
         #endregion Methods

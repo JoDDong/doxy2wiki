@@ -27,7 +27,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
     /// <summary>
     /// Stores data for a namepspace.
     /// </summary>
-    public struct DoxyCompoundNamespace : IComparable<DoxyCompoundNamespace>, IEquatable<DoxyCompoundNamespace?>
+    public sealed class DoxyCompoundNamespace : IComparable<DoxyCompoundNamespace>, IEquatable<DoxyCompoundNamespace>
     {
         #region Data Members (6)
 
@@ -75,7 +75,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <param name="left">The left value.</param>
         /// <param name="right">The right value.</param>
         /// <returns>Are equal (false) or not (true).</returns>
-        public static bool operator !=(DoxyCompoundNamespace? left, DoxyCompoundNamespace? right)
+        public static bool operator !=(DoxyCompoundNamespace left, DoxyCompoundNamespace right)
         {
             return (left == right) == false;
         }
@@ -86,16 +86,16 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <param name="left">The left value.</param>
         /// <param name="right">The right value.</param>
         /// <returns>Are equal (true) or not (false).</returns>
-        public static bool operator ==(DoxyCompoundNamespace? left, DoxyCompoundNamespace? right)
+        public static bool operator ==(DoxyCompoundNamespace left, DoxyCompoundNamespace right)
         {
-            if (left.HasValue)
+            if (left != null)
             {
-                return left.Value.Equals(right);
+                return left.Equals(right);
             }
 
-            if (right.HasValue)
+            if (right != null)
             {
-                return right.Value.Equals(left);
+                return right.Equals(left);
             }
 
             // both are (null)
@@ -128,9 +128,9 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <see cref="object.Equals(object)" />
         public override bool Equals(object obj)
         {
-            if (obj is DoxyCompoundNamespace?)
+            if (obj is DoxyCompoundNamespace)
             {
-                return this.Equals((DoxyCompoundNamespace?)obj);
+                return this.Equals((DoxyCompoundNamespace)obj);
             }
 
             return base.Equals(obj);
@@ -140,15 +140,15 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// 
         /// </summary>
         /// <see cref="IEquatable&lt;T&gt;.Equals(T)" />
-        public bool Equals(DoxyCompoundNamespace? other)
+        public bool Equals(DoxyCompoundNamespace other)
         {
-            if (other.HasValue == false)
+            if (other == null)
             {
                 return false;
             }
 
-            return object.Equals(this.Parent.Parent, other.Value.Parent.Parent) &&
-                   other.Value.FullName == this.FullName;
+            return object.Equals(this.Parent.Parent, other.Parent.Parent) &&
+                   other.FullName == this.FullName;
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <summary>
         /// A comparer for DoxyCompoundNamespace values.
         /// </summary>
-        public sealed class DoxyCompoundNamespaceComparer : IEqualityComparer<DoxyCompoundNamespace?>
+        public sealed class DoxyCompoundNamespaceComparer : IEqualityComparer<DoxyCompoundNamespace>
         {
             private static DoxyCompoundNamespaceComparer _instance = null;
             /// <summary>
@@ -217,7 +217,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
             /// 
             /// </summary>
             /// <see cref="IEqualityComparer&lt;T&gt;.Equals(T, T)" />
-            public bool Equals(DoxyCompoundNamespace? x, DoxyCompoundNamespace? y)
+            public bool Equals(DoxyCompoundNamespace x, DoxyCompoundNamespace y)
             {
                 return x == y;
             }
@@ -225,9 +225,9 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
             /// 
             /// </summary>
             /// <see cref="IEqualityComparer&lt;T&gt;.GetHashCode(T)" />
-            public int GetHashCode(DoxyCompoundNamespace? obj)
+            public int GetHashCode(DoxyCompoundNamespace obj)
             {
-                return obj.HasValue ? obj.Value.GetHashCode() : 0;
+                return obj != null ? obj.GetHashCode() : 0;
             }
         }
     }
