@@ -63,7 +63,7 @@
     <Compile Include="Extensions\System.Collections.cs" />
     <Compile Include="Classes\TMHelpers.cs" />
     <Compile Include="Interfaces\DoxyGen\IDoxyType.cs" />
-    <Compile Include="Classes\DoxyGen\SDoxyCompoundMemberParameter.cs" />
+    <Compile Include="Classes\DoxyGen\DoxyCompoundMemberParameter.cs" />
     <Compile Include="Classes\DoxyGen\DoxyCompoundMember.cs" />
     <Compile Include="Classes\DoxyGen\DoxyCompound.cs" />
     <Compile Include="Classes\DoxyGen\DoxyCompoundNamespace.cs" />

@@ -29,10 +29,30 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
     /// </summary>
     public sealed class DoxyCompoundNamespace : IComparable<DoxyCompoundNamespace>, IEquatable<DoxyCompoundNamespace>
     {
-        #region Data Members (6)
+        #region Fields (2)
 
         private object _compound;
         private string[] _parts;
+
+        #endregion Fields
+
+        #region Constructors (1)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="compound">The underlying compound.</param>
+        /// <param name="parts">The namespace parts.</param>
+        public DoxyCompoundNamespace(DoxyCompound compound, IEnumerable<string> parts)
+        {
+            this._compound = compound;
+            this._parts = parts.ToArray();
+        }
+
+        #endregion Constructors
+
+        #region Properties (4)
+
         /// <summary>
         /// Gets the full name.
         /// </summary>
@@ -65,9 +85,9 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
             get { return this._parts; }
         }
 
-        #endregion Data Members
+        #endregion Properties
 
-        #region Methods (9)
+        #region Methods  (8)
 
         /// <summary>
         /// Compares two values.
@@ -88,12 +108,14 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <returns>Are equal (true) or not (false).</returns>
         public static bool operator ==(DoxyCompoundNamespace left, DoxyCompoundNamespace right)
         {
-            if (left != null)
+            // the object cast is to prevent a StackOverflowException
+            if ((object)left != null)
             {
                 return left.Equals(right);
             }
 
-            if (right != null)
+            // the object cast is to prevent a StackOverflowException
+            if ((object)right != null)
             {
                 return right.Equals(left);
             }
@@ -109,17 +131,6 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         public int CompareTo(DoxyCompoundNamespace other)
         {
             return StringComparer.CurrentCulture.Compare(this.ToString(), other.ToString());
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="compound">The underlying compound.</param>
-        /// <param name="parts">The namespace parts.</param>
-        public DoxyCompoundNamespace(DoxyCompound compound, IEnumerable<string> parts)
-        {
-            this._compound = compound;
-            this._parts = parts.ToArray();
         }
 
         /// <summary>
@@ -185,12 +196,22 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
 
         #endregion Methods
 
+        #region Nested Classes (1)
+
+
         /// <summary>
         /// A comparer for DoxyCompoundNamespace values.
         /// </summary>
         public sealed class DoxyCompoundNamespaceComparer : IEqualityComparer<DoxyCompoundNamespace>
         {
+            #region Fields (1)
+
             private static DoxyCompoundNamespaceComparer _instance = null;
+
+            #endregion Fields
+
+            #region Constructors (1)
+
             /// <summary>
             /// 
             /// </summary>
@@ -198,6 +219,11 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
             {
 
             }
+
+            #endregion Constructors
+
+            #region Properties (1)
+
             /// <summary>
             /// Gets the singleton instance.
             /// </summary>
@@ -213,6 +239,11 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
                     return _instance;
                 }
             }
+
+            #endregion Properties
+
+            #region Methods  (2)
+
             /// <summary>
             /// 
             /// </summary>
@@ -221,6 +252,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
             {
                 return x == y;
             }
+
             /// <summary>
             /// 
             /// </summary>
@@ -229,6 +261,9 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
             {
                 return obj != null ? obj.GetHashCode() : 0;
             }
+
+            #endregion Methods
         }
+        #endregion Nested Classes
     }
 }

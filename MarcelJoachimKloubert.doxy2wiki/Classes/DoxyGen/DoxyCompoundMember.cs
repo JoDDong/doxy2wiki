@@ -215,7 +215,16 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <returns>The parameter.</returns>
         public DoxyCompoundMemberParameter this[string name]
         {
-            get { return this.GetParameterByName(name).Value; }
+            get
+            {
+                DoxyCompoundMemberParameter param = this.GetParameterByName(name);
+                if (param == null)
+                {
+                    throw new IndexOutOfRangeException(name);
+                }
+
+                return param;
+            }
         }
 
         /// <summary>
@@ -261,11 +270,10 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// </summary>
         /// <param name="name">The name of the parameter.</param>
         /// <returns>The parameter or (null) if not found.</returns>
-        public DoxyCompoundMemberParameter? GetParameterByName(string name)
+        public DoxyCompoundMemberParameter GetParameterByName(string name)
         {
             return this.Parameters
-                       .Cast<DoxyCompoundMemberParameter?>()
-                       .LastOrDefault(x => x.Value.Name == name);
+                       .LastOrDefault(x => x.Name == name);
         }
 
         /// <summary>

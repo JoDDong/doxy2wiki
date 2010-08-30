@@ -273,12 +273,14 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <returns>Are equal (true) or not (false).</returns>
         public static bool operator ==(DoxyCompound left, DoxyCompound right)
         {
-            if (left != null)
+            // the object cast is to prevent a StackOverflowException
+            if ((object)left != null)
             {
                 return left.Equals(right);
             }
 
-            if (right != null)
+            // the object cast is to prevent a StackOverflowException
+            if ((object)right != null)
             {
                 return right.Equals(left);
             }
