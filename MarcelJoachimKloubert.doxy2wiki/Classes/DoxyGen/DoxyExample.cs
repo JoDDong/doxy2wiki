@@ -30,14 +30,39 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
     /// Stores data of an example.
     /// </summary>
     /// <typeparam name="TParent">Type of the parent object.</typeparam>
-    public struct DoxyExample<TParent>
+    public sealed class DoxyExample<TParent>
     {
-        #region Data Members (8)
+        #region Fields (4)
 
         private string _code;
         private FileInfo _file;
         private TParent _parent;
         private XmlNode _xml;
+
+        #endregion Fields
+
+        #region Constructors (1)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent">The parent object.</param>
+        /// <param name="xml">The underlying XML data.</param>
+        /// <param name="file">The underlying file.</param>
+        public DoxyExample(TParent parent, XmlNode xml, FileInfo file)
+        {
+            this._parent = parent;
+            this._xml = xml;
+            this._file = file;
+            this._code = null;
+
+            this.InitMe();
+        }
+
+        #endregion Constructors
+
+        #region Properties (4)
+
         /// <summary>
         /// Gets the code that example.
         /// </summary>
@@ -70,25 +95,9 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
             get { return this._xml; }
         }
 
-        #endregion Data Members
+        #endregion Properties
 
-        #region Methods (5)
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parent">The parent object.</param>
-        /// <param name="xml">The underlying XML data.</param>
-        /// <param name="file">The underlying file.</param>
-        public DoxyExample(TParent parent, XmlNode xml, FileInfo file)
-        {
-            this._parent = parent;
-            this._xml = xml;
-            this._file = file;
-            this._code = null;
-
-            this.InitMe();
-        }
+        #region Methods  (4)
 
         /// <summary>
         /// Inits that value.

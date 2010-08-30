@@ -55,8 +55,8 @@
     <Compile Include="Classes\DoxyGen\EDoxyCompoundType.cs" />
     <Compile Include="Classes\DoxyGen\EDoxyCompoundMemberType.cs" />
     <Compile Include="Classes\DoxyGen\EDoxyVisibility.cs" />
-    <Compile Include="Classes\DoxyGen\SDoxyCompoundValue.cs" />
-    <Compile Include="Classes\DoxyGen\SDoxyExample.cs" />
+    <Compile Include="Classes\DoxyGen\DoxyCompoundValue.cs" />
+    <Compile Include="Classes\DoxyGen\DoxyExample.cs" />
     <Compile Include="Classes\DoxyGen\SDoxyUnknownType.cs" />
     <Compile Include="Extensions\System.cs" />
     <Compile Include="Extensions\MarcelJoachimKloubert.doxy2wiki.DoxyGen.cs" />
