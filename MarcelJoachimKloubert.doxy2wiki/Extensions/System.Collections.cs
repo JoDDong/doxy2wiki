@@ -39,7 +39,7 @@ namespace System.Collections
             long i = 0;
             foreach (object item in list)
             {
-                if (i > 0)
+                if (i++ > 0)
                 {
                     result += separator;
                 }
