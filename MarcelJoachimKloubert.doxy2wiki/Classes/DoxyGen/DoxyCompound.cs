@@ -29,9 +29,9 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
     /// <summary>
     /// Stores data of a DoxyGen compound.
     /// </summary>
-    public struct DoxyCompound : IEnumerable<DoxyCompoundMember>, IEquatable<DoxyCompound?>, IDoxyType
+    public sealed class DoxyCompound : IEnumerable<DoxyCompoundMember>, IEquatable<DoxyCompound>, IDoxyType
     {
-        #region Data Members (37)
+        #region Fields (18)
 
         private DoxyCompound[] _childCompounds;
         private DoxyCompoundMember[] _constructors;
@@ -51,6 +51,49 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         private DoxyCompoundValue[] _values;
         private DoxyVisibility _visibility;
         private XmlNode _xml;
+
+        #endregion Fields
+
+        #region Constructors (1)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent">The parent object.</param>
+        /// <param name="xml">The XML data.</param>
+        /// <param name="file">The underlying file.</param>
+        /// <param name="parentCompound">The parent compound.</param>
+        public DoxyCompound(DoxyProject parent, XmlNode xml, FileInfo file, DoxyCompound parentCompound = null)
+        {
+            this._parent = parent;
+            this._xml = xml;
+            this._file = file;
+            this._parentCompound = parentCompound;
+
+            this._id = null;
+            this._namespace = null;
+            this._name = null;
+            this._type = DoxyCompoundType.Unknown;
+            this._visibility = DoxyVisibility.Unknown;
+            this._description = null;
+
+            this._examples = new DoxyExample<DoxyCompound>[0];
+            this._childCompounds = new DoxyCompound[0];
+            this._constructors = new DoxyCompoundMember[0];
+            this._properties = new DoxyCompoundMember[0];
+            this._methods = new DoxyCompoundMember[0];
+            this._fields = new DoxyCompoundMember[0];
+            this._operators = new DoxyCompoundMember[0];
+
+            this._values = new DoxyCompoundValue[0];
+
+            this.InitMe();
+        }
+
+        #endregion Constructors
+
+        #region Properties (19)
+
         /// <summary>
         /// Gets the list of child compounds.
         /// </summary>
@@ -152,9 +195,9 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <summary>
         /// Gets the parent compund.
         /// </summary>
-        public DoxyCompound? ParentCompound
+        public DoxyCompound ParentCompound
         {
-            get { return (DoxyCompound?)this._parentCompound; }
+            get { return (DoxyCompound)this._parentCompound; }
         }
 
         /// <summary>
@@ -207,9 +250,9 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
             get { return this._xml; }
         }
 
-        #endregion Data Members
+        #endregion Properties
 
-        #region Methods (14)
+        #region Methods  (13)
 
         /// <summary>
         /// Compares two values.
@@ -217,7 +260,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <param name="left">The left value.</param>
         /// <param name="right">The right value.</param>
         /// <returns>Are equal (false) or not (true).</returns>
-        public static bool operator !=(DoxyCompound? left, DoxyCompound? right)
+        public static bool operator !=(DoxyCompound left, DoxyCompound right)
         {
             return (left == right) == false;
         }
@@ -228,16 +271,16 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <param name="left">The left value.</param>
         /// <param name="right">The right value.</param>
         /// <returns>Are equal (true) or not (false).</returns>
-        public static bool operator ==(DoxyCompound? left, DoxyCompound? right)
+        public static bool operator ==(DoxyCompound left, DoxyCompound right)
         {
-            if (left.HasValue)
+            if (left != null)
             {
-                return left.Value.Equals(right);
+                return left.Equals(right);
             }
 
-            if (right.HasValue)
+            if (right != null)
             {
-                return right.Value.Equals(left);
+                return right.Equals(left);
             }
 
             // both are (null)
@@ -247,46 +290,12 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="parent">The parent object.</param>
-        /// <param name="xml">The XML data.</param>
-        /// <param name="file">The underlying file.</param>
-        /// <param name="parentCompound">The parent compound.</param>
-        public DoxyCompound(DoxyProject parent, XmlNode xml, FileInfo file, DoxyCompound? parentCompound = null)
-        {
-            this._parent = parent;
-            this._xml = xml;
-            this._file = file;
-            this._parentCompound = parentCompound;
-
-            this._id = null;
-            this._namespace = null;
-            this._name = null;
-            this._type = DoxyCompoundType.Unknown;
-            this._visibility = DoxyVisibility.Unknown;
-            this._description = null;
-
-            this._examples = new DoxyExample<DoxyCompound>[0];
-            this._childCompounds = new DoxyCompound[0];
-            this._constructors = new DoxyCompoundMember[0];
-            this._properties = new DoxyCompoundMember[0];
-            this._methods = new DoxyCompoundMember[0];
-            this._fields = new DoxyCompoundMember[0];
-            this._operators = new DoxyCompoundMember[0];
-
-            this._values = new DoxyCompoundValue[0];
-
-            this.InitMe();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <see cref="object.Equals(object)" />
         public override bool Equals(object obj)
         {
-            if (obj is DoxyCompound?)
+            if (obj is DoxyCompound)
             {
-                return this.Equals((DoxyCompound?)obj);
+                return this.Equals((DoxyCompound)obj);
             }
 
             return base.Equals(obj);
@@ -296,15 +305,15 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// 
         /// </summary>
         /// <see cref="IEquatable&lt;T&gt;.Equals(T)" />
-        public bool Equals(DoxyCompound? other)
+        public bool Equals(DoxyCompound other)
         {
-            if (other.HasValue == false)
+            if (other == null)
             {
                 return false;
             }
 
-            return object.Equals(this.Parent, other.Value.Parent) &&
-                   this.FullName == other.Value.FullName;
+            return object.Equals(this.Parent, other.Parent) &&
+                   this.FullName == other.FullName;
         }
 
         /// <summary>
@@ -580,20 +589,23 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         }
 
         #endregion Methods
-        /// <summary>
-        /// Gets all examples of that compound.
-        /// </summary>
-        public DoxyExample<DoxyCompound>[] Examples
-        {
-            get { return this._examples; }
-        }
+
+        #region Nested Classes (1)
+
 
         /// <summary>
         /// A comparer for DoxyCompound values.
         /// </summary>
-        public sealed class DoxyCompoundComparer : IEqualityComparer<DoxyCompound?>
+        public sealed class DoxyCompoundComparer : IEqualityComparer<DoxyCompound>
         {
+            #region Fields (1)
+
             private static DoxyCompoundComparer _instance = null;
+
+            #endregion Fields
+
+            #region Constructors (1)
+
             /// <summary>
             /// 
             /// </summary>
@@ -601,6 +613,11 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
             {
 
             }
+
+            #endregion Constructors
+
+            #region Properties (1)
+
             /// <summary>
             /// Gets the singleton instance.
             /// </summary>
@@ -616,22 +633,38 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
                     return _instance;
                 }
             }
+
+            #endregion Properties
+
+            #region Methods  (2)
+
             /// <summary>
             /// 
             /// </summary>
             /// <see cref="IEqualityComparer&lt;T&gt;.Equals(T, T)" />
-            public bool Equals(DoxyCompound? x, DoxyCompound? y)
+            public bool Equals(DoxyCompound x, DoxyCompound y)
             {
                 return x == y;
             }
+
             /// <summary>
             /// 
             /// </summary>
             /// <see cref="IEqualityComparer&lt;T&gt;.GetHashCode(T)" />
-            public int GetHashCode(DoxyCompound? obj)
+            public int GetHashCode(DoxyCompound obj)
             {
-                return obj.HasValue ? obj.Value.GetHashCode() : 0;
+                return obj != null ? obj.GetHashCode() : 0;
             }
+
+            #endregion Methods
+        }
+        #endregion Nested Classes
+        /// <summary>
+        /// Gets all examples of that compound.
+        /// </summary>
+        public DoxyExample<DoxyCompound>[] Examples
+        {
+            get { return this._examples; }
         }
     }
 }

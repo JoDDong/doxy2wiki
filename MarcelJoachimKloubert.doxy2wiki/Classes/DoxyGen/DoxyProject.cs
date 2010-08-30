@@ -171,9 +171,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         private static DoxyCompound[] FilterAndSort(IEnumerable<DoxyCompound> compounds)
         {
             return compounds.OrderBy(x => x.FullName)
-                            .Cast<DoxyCompound?>()
                             .Distinct(DoxyCompound.DoxyCompoundComparer.Instance)
-                            .Cast<DoxyCompound>()
                             .ToArray();
         }
 
@@ -196,7 +194,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// </summary>
         /// <param name="id">The ID to search for.</param>
         /// <returns>The compound or (null) if not found.</returns>
-        public DoxyCompound? GetCompoundById(string id)
+        public DoxyCompound GetCompoundById(string id)
         {
             // search all compounds
             foreach (DoxyCompound compound in this.GetAllCompounds())

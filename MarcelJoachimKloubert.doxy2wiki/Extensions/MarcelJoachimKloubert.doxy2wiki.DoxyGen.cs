@@ -32,7 +32,64 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
     /// </summary>
     public static partial class TMExtensionsMarcelJoachimKloubert_doxy2wiki_DoxyGen
     {
-        #region Methods  (6)
+        #region Methods  (10)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="example"></param>
+        /// <param name="lang"></param>
+        /// <returns></returns>
+        public static string CreateMediaWikiCodeBlock<T>(this DoxyExample<T> example, string lang = "csharp")
+        {
+            return string.Format(@"<source lang=""{0}"">
+
+{1}
+
+</source>", lang
+          , example.Code);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="compound"></param>
+        /// <param name="lang"></param>
+        /// <returns></returns>
+        public static string CreateMediaWikiDeclarationBlock(this DoxyCompound compound, string lang = "csharp")
+        {
+            string result = string.Format("<source lang=\"{0}\">{1}{1}", lang, Environment.NewLine);
+
+            if (compound.Namespace.HasValue)
+            {
+                result += string.Format(
+                    "namespace {0}{1}{{{1}",
+                    compound.Namespace.Value.FullName,
+                    Environment.NewLine);
+            }
+
+            result += string.Format(
+                "    {0} {1} {2}{3}    {{{3}        // members{3}",
+                compound.Visibility.ToString().ToLower(),
+                compound.Type.ToString().ToLower(),
+                compound.Name,
+                Environment.NewLine);
+
+            result += string.Format(
+                "    }}{0}",
+                Environment.NewLine);
+
+            if (compound.Namespace.HasValue)
+            {
+                result += string.Format(
+                    "}}{0}",
+                    Environment.NewLine);
+            }
+
+            result += string.Format("{0}</source>", Environment.NewLine);
+            return result;
+        }
 
         /// <summary>
         /// Creates a wiki page for a DoxyGen project.
@@ -94,6 +151,43 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="rootNode"></param>
+        /// <param name="timestamp"></param>
+        public static void CreateMediaWikiPage(this DoxyCompoundMember member, XmlNode rootNode, DateTime? timestamp = null)
+        {
+            DateTime time = timestamp.HasValue ? timestamp.Value : DateTime.Now;
+
+            MediaWikiPage newPage = MediaWikiPage.Create(time);
+            newPage.Title = member.GetMediaWikiPath(false);
+            newPage.Author = "doxy2wiki";
+            newPage.Comment = "Import.";
+
+            string memberChapters = string.Empty;
+            foreach (DoxyCompoundMember m in member.Parent.Where(x => x.Type == member.Type &&
+                                                                      x.Name == member.Name)
+                                                          .OrderMembers())
+            {
+                memberChapters += string.Format(
+@" === {0}({1}) ==={2}{2}"
+, m.Name
+, m.JoinParamsAsString(),
+Environment.NewLine);
+            }
+
+            newPage.Content = string.Format(@"
+== {0} ==
+
+{1}
+", member.Name
+ , memberChapters);
+
+            newPage.ApplyToXml(rootNode);
+        }
+
+        /// <summary>
         /// Creates a wiki page for a compound.
         /// </summary>
         /// <param name="compound">The compound.</param>
@@ -119,10 +213,10 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
 {5}
 ", compound.FullName
  , compound.CreateMediaWikiDeclarationBlock()
- , compound.Constructors.CreateMediaWikiPageChapter("Constructors")
- , compound.Fields.CreateMediaWikiPageChapter("Fields")
- , compound.Methods.CreateMediaWikiPageChapter("Methods")
- , compound.Properties.CreateMediaWikiPageChapter("Properties"));
+ , compound.Constructors.CreateMediaWikiPageChapter("Constructors", rootNode, timestamp)
+ , compound.Fields.CreateMediaWikiPageChapter("Fields", rootNode, timestamp)
+ , compound.Methods.CreateMediaWikiPageChapter("Methods", rootNode, timestamp)
+ , compound.Properties.CreateMediaWikiPageChapter("Properties", rootNode, timestamp));
 
             newPage.ApplyToXml(rootNode);
         }
@@ -132,9 +226,13 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// </summary>
         /// <param name="members"></param>
         /// <param name="title"></param>
+        /// <param name="rootNode"></param>
+        /// <param name="timestamp"></param>
         /// <returns></returns>
-        public static string CreateMediaWikiPageChapter(this IEnumerable<DoxyCompoundMember> members, string title)
+        public static string CreateMediaWikiPageChapter(this IEnumerable<DoxyCompoundMember> members, string title, XmlNode rootNode, DateTime? timestamp)
         {
+            DateTime time = timestamp.HasValue ? timestamp.Value : DateTime.Now;
+
             string result = string.Format("=== {0} ==={1}{1}", title, Environment.NewLine);
 
             if (members.LongCount() < 1)
@@ -146,7 +244,7 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
             }
             else
             {
-                foreach (DoxyCompoundMember member in members.OrderBy(x => x.Name))
+                foreach (DoxyCompoundMember member in members.OrderMembers())
                 {
                     string memberName = member.Name;
                     string memberSuffix = string.Empty;
@@ -173,24 +271,19 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
                         "<br />",
                         member.Description,
                         Environment.NewLine);
+
+                    member.CreateMediaWikiPage(rootNode, time);
                 }
             }
 
             return result;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="member"></param>
-        /// <returns></returns>
-        public static string GetMediaWikiPath(this DoxyCompoundMember member)
+        private static IEnumerable<DoxyCompoundMember> OrderMembers(this IEnumerable<DoxyCompoundMember> members)
         {
-            return string.Format(
-                "{0}/{1}#{2}",
-                member.Parent.GetMediaWikiPath(),
-                member.Name,
-                string.Format("{0}({1})", member.Name, member.JoinParamsAsString()));
+            return members.OrderBy(x => x.Name)
+                          .ThenBy(x => x.Parameters.LongLength)
+                          .ThenBy(x => x.JoinParamsAsString());
         }
 
         /// <summary>
@@ -221,6 +314,21 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
         /// 
         /// </summary>
         /// <param name="member"></param>
+        /// <param name="addAnchor"></param>
+        /// <returns></returns>
+        public static string GetMediaWikiPath(this DoxyCompoundMember member, bool addAnchor = true)
+        {
+            return string.Format(
+                "{0}/{1}{2}",
+                member.Parent.GetMediaWikiPath(),
+                member.Name,
+                addAnchor ? string.Format("#{0}({1})", member.Name, member.JoinParamsAsString()) : string.Empty);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="member"></param>
         /// <returns></returns>
         public static string JoinParamsAsString(this DoxyCompoundMember member)
         {
@@ -236,63 +344,6 @@ namespace MarcelJoachimKloubert.doxy2wiki.DoxyGen
                     param.ParameterType == null ? "???" : param.ParameterType.FullName, param.Name);
             }
 
-            return result;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="example"></param>
-        /// <param name="lang"></param>
-        /// <returns></returns>
-        public static string CreateMediaWikiCodeBlock<T>(this DoxyExample<T> example, string lang = "csharp")
-        {
-            return string.Format(@"<source lang=""{0}"">
-
-{1}
-
-</source>", lang
-          , example.Code);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="compound"></param>
-        /// <param name="lang"></param>
-        /// <returns></returns>
-        public static string CreateMediaWikiDeclarationBlock(this DoxyCompound compound, string lang = "csharp")
-        {
-            string result = string.Format("<source lang=\"{0}\">{1}{1}", lang, Environment.NewLine);
-
-            if (compound.Namespace.HasValue)
-            {
-                result += string.Format(
-                    "namespace {0}{1}{{{1}",
-                    compound.Namespace.Value.FullName,
-                    Environment.NewLine);
-            }
-
-            result += string.Format(
-                "    {0} {1} {2}{3}    {{{3}        // members{3}",
-                compound.Visibility.ToString().ToLower(),
-                compound.Type.ToString().ToLower(),
-                compound.Name,
-                Environment.NewLine);
-
-            result += string.Format(
-                "    }}{0}",
-                Environment.NewLine);
-
-            if (compound.Namespace.HasValue)
-            {
-                result += string.Format(
-                    "}}{0}",
-                    Environment.NewLine);
-            }
-
-            result += string.Format("{0}</source>", Environment.NewLine);
             return result;
         }
 
